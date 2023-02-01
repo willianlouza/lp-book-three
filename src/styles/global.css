@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap");
 * {
   scroll-behavior: smooth;
   box-sizing: border-box;
@@ -10,7 +11,9 @@ body {
   height: 100%;
 }
 body {
+  font-family: "Montserrat", sans-serif;
   background-color: #000;
+  color: #fefefe;
   overflow-x: hidden;
   display: flex;
   flex-direction: column;
@@ -20,12 +23,16 @@ body {
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 99;
+  z-index: 5;
 }
 .bg-wrapper {
   width: 100%;
   height: 100%;
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 10rem;
 }
 .bg-wrapper::after {
   content: "";
@@ -34,10 +41,53 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: radial-gradient(transparent, rgba(0, 0, 0, 01) 90%);
+  background: radial-gradient(transparent, rgba(0, 0, 0, 1) 90%);
 }
 .bg-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+
+.big-text {
+  position: absolute;
+  color: #fff4;
+  font-size: 22rem;
+  text-align: center;
+  line-height: 20rem;
+  top: 50px;
+  left: -150px;
+}
+.hero-title {
+  width: 40rem;
+}
+.hero-title h1{
+  font-size: 5rem;
+  font-weight: bold;
+  line-height: 4.5rem;
+}
+.hero-title p{
+  margin: 15px 0;
+  font-size: 1rem;
+}
+.button-row{
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+button{
+  padding: 1rem;
+  border: none;
+  min-width: 150px;
+  border-radius: 0.3rem;
+  font-weight: 600;
+  cursor: pointer;
+  z-index: 10;
+}
+button:hover{
+  background-color: #dbdbdb;
 }

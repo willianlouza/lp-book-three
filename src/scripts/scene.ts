@@ -1,6 +1,5 @@
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
 const domScene = document.getElementById("three-scene");
 
@@ -8,12 +7,11 @@ let SCREEN_WIDTH = window.innerWidth;
 let SCREEN_HEIGHT = window.innerHeight;
 let ASPECT = SCREEN_WIDTH / SCREEN_HEIGHT;
 
-let camera_1: THREE.PerspectiveCamera;
-let camera_2: THREE.PerspectiveCamera;
-let scene_1: THREE.Scene;
-let scene_2: THREE.Scene;
+let book_camera: THREE.PerspectiveCamera;
+let snow_camera: THREE.PerspectiveCamera;
+let book_scene: THREE.Scene;
+let snow_scene: THREE.Scene;
 let renderer: THREE.WebGLRenderer;
-let controls: OrbitControls;
 
 let book: THREE.Group;
 let snows: SnowFlake[] = [];
@@ -21,19 +19,19 @@ let snows: SnowFlake[] = [];
 window.addEventListener("resize", onResize);
 
 function init() {
-  scene_1 = new THREE.Scene();
-  scene_1.fog = new THREE.FogExp2(0x000000, 0.0008);
+  book_scene = new THREE.Scene();
+  book_scene.fog = new THREE.FogExp2(0x000000, 0.0008);
 
-  scene_2 = new THREE.Scene();
-  scene_2.fog = new THREE.FogExp2(0x000000, 0.0008);
+  snow_scene = new THREE.Scene();
+  snow_scene.fog = new THREE.FogExp2(0x000000, 0.0008);
 
-  camera_1 = new THREE.PerspectiveCamera(75, ASPECT, 0.1, 1000);
-  camera_1.position.set(0, 0, 15);
-  camera_1.lookAt(scene_1.position);
+  book_camera = new THREE.PerspectiveCamera(75, ASPECT, 0.1, 1000);
+  book_camera.position.set(0, 0, 15);
+  book_camera.lookAt(snow_scene.position);
 
-  camera_2 = new THREE.PerspectiveCamera(75, ASPECT, 0.1, 1000);
-  camera_2.position.set(0, 0, 15);
-  camera_2.lookAt(scene_2.position);
+  snow_camera = new THREE.PerspectiveCamera(75, ASPECT, 0.1, 1000);
+  snow_camera.position.set(0, 0, 15);
+  snow_camera.lookAt(snow_scene.position);
 
   renderer = new THREE.WebGLRenderer({ alpha: true });
   renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -41,29 +39,20 @@ function init() {
   domScene?.appendChild(renderer.domElement);
 
   const light = new THREE.AmbientLight(0xffffff, 1);
-  scene_1.add(light);
+  book_scene.add(light);
 
   const light2 = new THREE.DirectionalLight(0xffffff, 50);
   light2.position.set(0, 0, 500);
-  scene_2.add(light2);
+  snow_scene.add(light2);
 
   loadBook();
   loadParticles();
 
-  controls = new OrbitControls(camera_1, renderer.domElement);
-  controls.autoRotate = false;
-  controls.enableZoom = false;
-  controls.enablePan = false;
-  controls.enableDamping = true;
-  controls.dampingFactor = 0.25;
-  controls.minPolarAngle = 1.6;
-  controls.maxPolarAngle = 1.6;
-  controls.update();
 }
 function render() {
   beforeUpdate();
-  renderer.render(scene_1, camera_1);
-  renderer.render(scene_2, camera_2);
+  renderer.render(book_scene, book_camera);
+  renderer.render(snow_scene, snow_camera);
 }
 function animate() {
   requestAnimationFrame(animate);
@@ -73,17 +62,19 @@ function onResize() {
   SCREEN_WIDTH = window.innerWidth;
   SCREEN_HEIGHT = window.innerHeight;
   ASPECT = SCREEN_WIDTH / SCREEN_HEIGHT;
-  camera_1.aspect = ASPECT;
-  camera_1.updateProjectionMatrix();
+  book_camera.aspect = ASPECT;
+  snow_camera.aspect = ASPECT;
+  book_camera.updateProjectionMatrix();
+  snow_camera.updateProjectionMatrix();
   renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
 }
 function loadBook() {
   const loader = new GLTFLoader();
   loader.load("models/gltf/book.glb", (object) => {
     object.scene.rotation.set(0, 3, 0);
-    object.scene.position.set(0, -6, 0);
+    object.scene.position.set(10, -6, 0);
     book = object.scene;
-    scene_1.add(object.scene);
+    book_scene.add(object.scene);
   });
 }
 
@@ -99,8 +90,6 @@ function beforeUpdate() {
       ref.reset();
     }
   }
-
-  controls.update();
 }
 
 function loadParticles() {
@@ -125,7 +114,7 @@ function loadParticles() {
     snows.push(new SnowFlake(mesh.position, mesh.scale));
   }
 
-  scene_2.add(...points);
+  snow_scene.add(...points);
 }
 
 class SnowFlake {
