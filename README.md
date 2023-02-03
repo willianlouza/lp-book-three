@@ -1,8 +1,8 @@
 # Three.js Landing Page
 
-[Demo](https://landing-page-threejs-delta.vercel.app/)
-<img width="800" height="400" src="https://raw.githubusercontent.com/willianlouza/lp-book-three/master/screenshot/print.png"/>
+![](https://raw.githubusercontent.com/willianlouza/lp-book-three/master/screenshot/print.png)
 
+[Demo](https://landing-page-threejs-delta.vercel.app/)
 
 ### How to use ?
 
