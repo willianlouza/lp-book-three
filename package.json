@@ -1,13 +1,12 @@
 {
   "name": "lp-book-threejs",
   "version": "1.0.0",
-  "main": "index.js",
   "repository": "https://github.com/willianlouza/lp-book-three.git",
   "author": "Willian Louza <willianlouza@gmail.com>",
   "license": "MIT",
   "scripts": {
     "dev": "parcel ./src/index.html",
-    "build": "parcel build dist"
+    "build": "rm -rf dist && parcel build src/index.html --no-source-maps"
   },
   "dependencies": {
     "three": "^0.149.0"
